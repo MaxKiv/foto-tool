@@ -1,0 +1,13 @@
+[package]
+name = "foto-tool"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+chafa = { version = "0.1.1", optional = true }
+image = { version = "=0.24.9", optional = true }
+chrono = "0.4"
+
+[features]
+# default = ["libChafa"]  # Set libChafa as the default feature
+libChafa = ["chafa", "image"]
