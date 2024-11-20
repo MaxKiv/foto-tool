@@ -62,6 +62,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 }
                 CityName(city_name) => {
                     create_dir_and_copy_images(datetime, city_name, images)?;
+                    image_idx = 0;
                     break;
                 }
             }
@@ -185,7 +186,7 @@ fn ask_user_directory_name() -> Result<UserOptions, Box<dyn Error>> {
 
     loop {
         println!("What city was this?");
-        println!("Enter city name, or enter 'n' for next image, or 'p' for previous. 'q' to quit");
+        println!("Enter city name, enter or 'n' for next image, 'p' for previous. 'q' to quit");
         io::stdout().flush()?; // Flush to ensure the prompt is displayed before reading input
 
         // Read the user's input
@@ -193,6 +194,10 @@ fn ask_user_directory_name() -> Result<UserOptions, Box<dyn Error>> {
         io::stdin().read_line(&mut input)?;
 
         match input.trim().to_lowercase().as_str() {
+            "" => {
+                println!("Showing next image");
+                return Ok(NextImage);
+            }
             "n" => {
                 println!("Showing next image");
                 return Ok(NextImage);
@@ -207,8 +212,12 @@ fn ask_user_directory_name() -> Result<UserOptions, Box<dyn Error>> {
             }
             user_input_city_name => {
                 if !user_input_city_name.is_empty() {
-                    println!("City entered: {}", user_input_city_name);
-                    return Ok(CityName(user_input_city_name.to_string()));
+                    let mut city_name = user_input_city_name.to_string();
+                    if let Some(r) = city_name.get_mut(0..1) {
+                        r.make_ascii_uppercase();
+                    }
+                    println!("City entered: {}", city_name);
+                    return Ok(CityName(city_name));
                 } else {
                     println!("Enter a valid city name");
                 }

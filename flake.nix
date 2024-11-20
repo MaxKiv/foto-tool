@@ -33,6 +33,7 @@
             rust-bin.stable.latest.default
             rust-analyzer
             nil
+            vscode-extensions.vadimcn.vscode-lldb.adapter # codelldb - debugger
             # dune_3
             # ocaml
           ];
